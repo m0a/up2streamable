@@ -1,0 +1,3 @@
+package: github.com/m0a/up2streamable
+import:
+- package: github.com/maxkueng/go-streamable

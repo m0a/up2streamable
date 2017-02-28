@@ -1,0 +1,6 @@
+hash: 1dca4114ad3cc6dcf3f67b6447108da573900bef112d6bafdfcd0a32c84727e7
+updated: 2017-02-28T11:14:23.988729195+09:00
+imports:
+- name: github.com/maxkueng/go-streamable
+  version: 729d7fdb9f140a0dff6e0e0ca27b380db2e47d87
+testImports: []
