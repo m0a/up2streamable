@@ -59,7 +59,7 @@ func (c *Client) SetCredentials(username, password string) *Client {
 }
 
 func uploadVideoFromURL(creds Credentials, videoURL string) (VideoInfo, error) {
-	client := &http.Client{}
+	client := http.DefaultClient
 
 	req, err := http.NewRequest("GET", getImportURL(videoURL), nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func uploadVideo(creds Credentials, filePath string) (VideoInfo, error) {
 
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType())
 
-	client := &http.Client{}
+	client := http.DefaultClient
 	res, err := client.Do(req)
 	if err != nil {
 		return VideoInfo{}, err
@@ -156,7 +156,7 @@ func uploadVideo(creds Credentials, filePath string) (VideoInfo, error) {
 }
 
 func getVideo(creds Credentials, shortcode string) (VideoInfo, error) {
-	client := &http.Client{}
+	client := http.DefaultClient
 
 	req, err := http.NewRequest("GET", getVideoURL(shortcode), nil)
 	if err != nil {
