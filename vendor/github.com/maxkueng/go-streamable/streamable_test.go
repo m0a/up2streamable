@@ -10,6 +10,16 @@ import (
 
 var testFilesDir = path.Join(".", "test-files")
 
+func Test_UploadVideoLite(t *testing.T) {
+	testFile := path.Join(testFilesDir, "cat-video.mp4")
+
+	c := New()
+	res, err := c.UploadVideoLite(testFile)
+
+	assert.Nil(t, err)
+	assert.NotZero(t, res)
+}
+
 func Test_UploadVideo(t *testing.T) {
 	testFile := path.Join(testFilesDir, "cat-video.mp4")
 

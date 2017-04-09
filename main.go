@@ -18,7 +18,7 @@ func setuphttpClient(minutes int64) {
 	}
 }
 
-func main() {
+func _main() {
 
 	var _ = os.IsExist(nil)
 	id := flag.String("u", "", "username")
@@ -41,13 +41,14 @@ func main() {
 
 		if filepath.Ext(path) == *ext {
 			fmt.Println("uploading.. ", path)
-			video, err := client.UploadVideo(path)
+			video, err := client.UploadVideoLite(path)
 			if err != nil {
 				timeout, ok := err.(net.Error)
 				if ok && timeout.Timeout() {
 					fmt.Println(path, "is timeout. upload skip. ")
 					return nil
 				}
+				fmt.Println(path, "is not timeout. error is ", err.Error())
 				return err
 			}
 			//fmt.Printf("%v\n", video)
@@ -65,4 +66,43 @@ func main() {
 		return nil
 	}
 	filepath.Walk(*searchPath, f)
+}
+
+func main() {
+	// cpuprofile := "mycpu.prof"
+	// memprofile := "mymem.prof"
+
+	// f, err := os.Create(cpuprofile)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fm, err := os.Create(memprofile)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// runtime.MemProfileRate = 1024
+	// pprof.StartCPUProfile(f)
+
+	// defer func() {
+	// 	runtime.GC()
+	// 	pprof.WriteHeapProfile(fm)
+	// 	fm.Close()
+	// 	log.Printf("memory profile end....\n")
+	// }()
+
+	// defer pprof.StopCPUProfile()
+	// c := make(chan os.Signal, 1)
+	// signal.Notify(c, os.Interrupt)
+	// go func() {
+	// 	for sig := range c {
+	// 		log.Printf("captured %v, stopping profiler and exiting...", sig)
+	// 		runtime.GC()
+	// 		pprof.WriteHeapProfile(fm)
+	// 		fm.Close()
+	// 		pprof.StopCPUProfile()
+	// 		os.Exit(1)
+	// 	}
+	// }()
+	_main()
 }
