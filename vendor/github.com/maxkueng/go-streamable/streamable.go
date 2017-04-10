@@ -100,6 +100,15 @@ func uploadVideoFromURL(creds Credentials, videoURL string) (VideoInfo, error) {
 
 }
 
+func contentLength(fileSize int64, path string) int64 {
+	var buf bytes.Buffer
+	multipartWriter := multipart.NewWriter(&buf)
+	multipartWriter.CreateFormFile("file", path)
+	multipartWriter.Close()
+	// fmt.Println(string(buf.Bytes()))
+	// fmt.Println("headersize = ", buf.Len())
+	return int64(buf.Len()) + fileSize
+}
 func uploadVideoLite(creds Credentials, filePath string) (VideoInfo, error) {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		return VideoInfo{}, err
@@ -115,7 +124,6 @@ func uploadVideoLite(creds Credentials, filePath string) (VideoInfo, error) {
 	pipeReader, pipeWriter := io.Pipe()
 	multipartWriter := multipart.NewWriter(pipeWriter)
 	stat, _ := fileHandle.Stat()
-	ContentLength := stat.Size()
 
 	// write --
 	go func() {
@@ -160,7 +168,7 @@ func uploadVideoLite(creds Credentials, filePath string) (VideoInfo, error) {
 	// fmt.Println("req.Header.Set Content-Type")
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType())
 
-	req.ContentLength = ContentLength + 252 // 252 is headersize
+	req.ContentLength = contentLength(stat.Size(), filePath)
 
 	fmt.Println("start upload.")
 	client := http.DefaultClient

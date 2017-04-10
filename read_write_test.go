@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"mime/multipart"
 	"testing"
 )
 
@@ -63,4 +65,13 @@ func TestSampleTest(t *testing.T) {
 	// fmt.Fprintf(myChan, "1234")
 
 	t.Error("Hogeee.")
+}
+
+func TestSomething(t *testing.T) {
+	var buf bytes.Buffer
+	multipartWriter := multipart.NewWriter(&buf)
+	multipartWriter.CreateFormFile("file", "13")
+	multipartWriter.Close()
+	fmt.Println(string(buf.Bytes()))
+	fmt.Println(buf.Len())
 }
