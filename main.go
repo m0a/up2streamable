@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	streamable "github.com/maxkueng/go-streamable"
+	streamable "github.com/m0a/go-streamable"
 )
 
 func setuphttpClient(minutes int64) {
@@ -41,7 +41,7 @@ func _main() {
 
 		if filepath.Ext(path) == *ext {
 			fmt.Println("uploading.. ", path)
-			video, err := client.UploadVideoLite(path)
+			video, err := client.UploadVideoWithProgress(path)
 			if err != nil {
 				timeout, ok := err.(net.Error)
 				if ok && timeout.Timeout() {
